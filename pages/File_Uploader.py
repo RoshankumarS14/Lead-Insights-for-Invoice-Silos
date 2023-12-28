@@ -8,21 +8,6 @@ st.set_page_config(
     initial_sidebar_state="collapsed",
 )
 
-st.markdown('''
-    <style>
-    .element-container {
-        background-color: #a19e9e;
-        opacity: 1;
-    }
-    .st-b7 {
-        color: white;
-    }
-    .css-nlntq9 {
-        font-family: Source Sans Pro;
-    }
-    </style>
-''', unsafe_allow_html=True)
-
 def replace_file(file):
     # Specify the directory where the file exists
     directory = '.'  # Current directory (you can change this to your desired directory)
