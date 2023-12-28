@@ -92,7 +92,7 @@ with col_gauge:
     st.plotly_chart(fig, use_container_width=True)
 
 # openai_key = os.getenv("OPEN_AI_API_KEY")
-openai_key =  "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"
+
 chat = ChatOpenAI(openai_api_key=openai_key,model="gpt-4-1106-preview")
 insights = st.button("Generate Insights",use_container_width=True)
 
