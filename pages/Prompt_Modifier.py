@@ -19,7 +19,7 @@ if save_quality:
     st.success('Quality prompt saved!')
 
 st.subheader("Quantity Prompt")
-quantity_prompt = st.text_area("", quantity_prompt,height=400)
+quantity_prompt = st.text_area("", quantity_prompt,height=440)
 save_quantity = st.button('Save Quantity Prompt')
 if save_quantity:
     prompts[1] = quantity_prompt
