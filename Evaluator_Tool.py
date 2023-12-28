@@ -103,6 +103,10 @@ if insight_type=="Quality":
         human_template="{text}"
         human_message_prompt = HumanMessagePromptTemplate.from_template(human_template)
         chat_prompt = ChatPromptTemplate.from_messages([system_message_prompt, human_message_prompt])
+        # get a chat completion from the formatted messages
+        response = chat(chat_prompt.format_prompt(text=invoice_df.to_json(orient='records')).to_messages())
+        # st.write("Input:"+"\n"+str(chat_prompt.format_prompt(text=invoice_df.to_json(orient='records')).to_messages()))
+        st.write(response.content.replace("$", "\\$"))
 else:
     insights_quan = st.button("Generate Recommendations With a Bias Towards: Quantity",use_container_width=True)
     if insights_quan:
@@ -112,12 +116,10 @@ else:
         human_template="{text}"
         human_message_prompt = HumanMessagePromptTemplate.from_template(human_template)
         chat_prompt = ChatPromptTemplate.from_messages([system_message_prompt, human_message_prompt])
-        
-
-    # get a chat completion from the formatted messages
-    response = chat(chat_prompt.format_prompt(text=invoice_df.to_json(orient='records')).to_messages())
-    # st.write("Input:"+"\n"+str(chat_prompt.format_prompt(text=invoice_df.to_json(orient='records')).to_messages()))
-    st.write(response.content.replace("$", "\\$"))
+        # get a chat completion from the formatted messages
+        response = chat(chat_prompt.format_prompt(text=invoice_df.to_json(orient='records')).to_messages())
+        # st.write("Input:"+"\n"+str(chat_prompt.format_prompt(text=invoice_df.to_json(orient='records')).to_messages()))
+        st.write(response.content.replace("$", "\\$"))
 
 
     
