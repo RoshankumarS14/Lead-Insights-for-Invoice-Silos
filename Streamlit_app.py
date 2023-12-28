@@ -13,7 +13,7 @@ from plotly.subplots import make_subplots
 
 st.set_page_config(
     page_title="Leads Insights",
-    page_icon="📈",
+    page_icon="💡",
     layout="centered",
     initial_sidebar_state="collapsed",
 )
