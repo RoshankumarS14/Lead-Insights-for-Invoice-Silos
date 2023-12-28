@@ -81,7 +81,7 @@ invoice_df.index = np.arange(1,len(invoice_df)+1)
 col_df,col_gauge = st.columns([1,1])
 
 with col_df:
-    df_html = invoice_df.to_html(classes='table table-striped')
+    df_html = invoice_df.to_html(classes='table table-striped', index=False)
     df_html = df_html.replace('<table ','<table style="text-align:right; margin-bottom:40px; margin-top:50px;" ')
     st.markdown(df_html, unsafe_allow_html=True)
 
