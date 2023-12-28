@@ -8,6 +8,8 @@ from langchain.prompts.chat import (
     HumanMessagePromptTemplate,
 )
 from langchain.chat_models import ChatOpenAI
+import plotly.graph_objects as go
+from plotly.subplots import make_subplots
 
 st.set_page_config(
     page_title="Leads Insights",
@@ -18,6 +20,41 @@ st.set_page_config(
 st.image("logo.png")
 df = pd.read_excel("ArcaData-TestData.xlsx")
 df = df.loc[:,:"CLF"].iloc[:-1]
+
+def plot_gauge_APScale(value,title="AP Scale"):
+
+    current_price = value
+    ask_price = 100
+    bid_price = 0
+    spread = 10
+            
+    trace = go.Indicator(
+        mode="gauge+number+delta",
+        title={'text': title},
+        value=current_price,
+        domain={'x': [0, 1], 'y': [0, 1]},
+        gauge={
+            'shape': 'angular',
+            'axis': {'range': [bid_price - spread, ask_price + spread]},
+            'bar': {'color': "black", 'thickness': 0.2},
+            'bgcolor': 'black',
+            'borderwidth': 2,
+            'bordercolor': 'black',
+            'steps': [
+                {'range': [80, 100], 'color': 'green'},
+                {'range': [50, 80], 'color': '#30F54B'},
+                {'range': [40, 50], 'color': 'yellow'},
+                {'range': [30, 40], 'color': 'orange'},
+                {'range': [0, 30], 'color': 'red'}
+            ],
+            'threshold': {
+                'line': {'color': 'blue', 'width': 6},
+                'thickness': 0.75,
+                'value': current_price,
+                        }
+                    }
+                )
+    return trace
 
 invoice_budget = dict(pd.pivot_table(df,"Budget","Invoice",aggfunc=sum)[:].reset_index().values)
 silo_ap_rating = {"S01": 5,"S02": 6,"S03": 4,"S04": 3,"S05": 5,"S06": 5,"S07": 7,"S08": 7,"S09": 7,"S26": 8,"S28": 7,"S30": 2,"S41": 5,"H01": 8}
@@ -34,15 +71,27 @@ df["Shift To"] = df["CLF"].apply(lambda a : "Quality" if a>1 else "Quantity")
 
 invoice = st.selectbox("Select the invoice:",df["Invoice"].unique())
 insight_type = df[df["Invoice"]==invoice]["Shift To"].values[0]
-invoice_df = df[df["Invoice"]==invoice][["Silo","APLM","CPL-LE","R-Budget"]].sort_values(["Silo"]).reset_index(drop=True)
-openai_key = "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"
+invoice_df = df[df["Invoice"]==invoice][["Silo","APLM","CPL-LE","R-Budget"]].sort_values(["Silo"])
+invoice_leads = df[df["Invoice"]==invoice][["Ad-Leads","AP Rating"]]
+average_ap_rating = sum(invoice_leads["Ad-Leads"]*invoice_leads["AP Rating"])/sum(invoice_leads["Ad-Leads"])
+invoice_df.index = np.arange(1,len(invoice_df)+1)
+
+col_df,col_gauge = st.columns([1,1])
+
+with col_df:
+    df_html = invoice_df.to_html(classes='table table-striped')
+    df_html = df_html.replace('<table ','<table style="text-align:right; margin-bottom:40px; margin-top:50px;" ')
+    st.markdown(df_html, unsafe_allow_html=True)
+
+with col_gauge:
+    trace = plot_gauge_APScale(int(average_ap_rating*10))
+    fig = make_subplots(rows=1, cols=1, specs=[[{'type': 'indicator'}]])
+    fig.append_trace(trace, row=1, col=1)
+    st.plotly_chart(fig, use_container_width=True)
+
+openai_key = os.getenv("OPEN_AI_API_KEY")
 chat = ChatOpenAI(openai_api_key=openai_key,model="gpt-4-1106-preview")
-
-df_html = invoice_df.to_html(classes='table table-striped')
-df_html = df_html.replace('<table ','<table style="text-align:right; margin-bottom:40px; margin-top:50px;" ')
-st.markdown(df_html, unsafe_allow_html=True)
-
-insights = st.button("Generate Insights")
+insights = st.button("Generate Insights",use_container_width=True)
 
 if insights:
 
