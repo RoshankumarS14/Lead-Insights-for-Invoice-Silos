@@ -9,21 +9,35 @@ st.set_page_config(
 )
 
 def replace_file(file):
-    # Specify the directory where the file exists
+    # # Specify the directory where the file exists
+    # directory = '.'  # Current directory (you can change this to your desired directory)
+
+    # # Check if the uploaded file exists
+    # if os.path.exists(os.path.join(directory, file.name)):
+    #     # Remove the existing file
+    #     os.remove(os.path.join(directory, file.name))
+
+    #     # Save the uploaded file in the same directory with the same name
+    #     with open(os.path.join(directory, file.name), 'wb') as f:
+    #         f.write(file.getvalue())
+        
+    #     st.success(f"File '{file.name}' replaced successfully!")
+    # else:
+    #     st.warning(f"File '{file.name}' does not exist in the directory.")
+
     directory = '.'  # Current directory (you can change this to your desired directory)
+    new_file_name = 'ArcaData-TestData'
 
     # Check if the uploaded file exists
-    if os.path.exists(os.path.join(directory, file.name)):
+    if os.path.exists(os.path.join(directory, new_file_name)):
         # Remove the existing file
-        os.remove(os.path.join(directory, file.name))
+        os.remove(os.path.join(directory, new_file_name))
 
-        # Save the uploaded file in the same directory with the same name
-        with open(os.path.join(directory, file.name), 'wb') as f:
-            f.write(file.getvalue())
+    # Save the uploaded file in the same directory with the new name
+    with open(os.path.join(directory, new_file_name), 'wb') as f:
+        f.write(file.getvalue())
         
-        st.success(f"File '{file.name}' replaced successfully!")
-    else:
-        st.warning(f"File '{file.name}' does not exist in the directory.")
+    st.success(f"File '{new_file_name}' replaced successfully!")
 
 def main():
     st.title("Replace File in Current Directory")
