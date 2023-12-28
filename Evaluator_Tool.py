@@ -94,7 +94,7 @@ with col_gauge:
 openai_key = os.getenv("OPEN_AI_API_KEY")
 chat = ChatOpenAI(openai_api_key=openai_key,model="gpt-4-1106-preview")
 insights = st.button("Generate Insights",use_container_width=True)
-
+st.write(prompts[0].strip())
 if insights:
 
     if insight_type=="Quality":
