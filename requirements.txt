@@ -1,3 +1,6 @@
 streamlit
 langchain
 plotly
+openpyxl
+plotly-express
+openai
