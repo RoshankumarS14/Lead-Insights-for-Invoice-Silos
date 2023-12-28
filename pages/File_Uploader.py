@@ -1,6 +1,13 @@
 import streamlit as st
 import os
 
+st.set_page_config(
+    page_title="File Uploader",
+    page_icon="💡",
+    layout="centered",
+    initial_sidebar_state="collapsed",
+)
+
 def replace_file(file):
     # Specify the directory where the file exists
     directory = '.'  # Current directory (you can change this to your desired directory)
