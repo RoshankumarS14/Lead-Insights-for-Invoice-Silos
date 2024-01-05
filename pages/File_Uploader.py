@@ -26,18 +26,19 @@ def replace_file(file):
     #     st.warning(f"File '{file.name}' does not exist in the directory.")
 
     directory = '.'  # Current directory (you can change this to your desired directory)
-    new_file_name = 'ArcaData-TestData'
+    new_file_name = 'ArcaData-TestData.xlsx'
 
     # Check if the uploaded file exists
     if os.path.exists(os.path.join(directory, new_file_name)):
         # Remove the existing file
+        print("IF")
         os.remove(os.path.join(directory, new_file_name))
 
     # Save the uploaded file in the same directory with the new name
     with open(os.path.join(directory, new_file_name), 'wb') as f:
         f.write(file.getvalue())
         
-    st.success(f"File '{new_file_name}' replaced successfully!")
+    st.success(f"File '{file.name}' replaced in place of {new_file_name} successfully!")
 
 def main():
     st.title("Replace File in Current Directory")
