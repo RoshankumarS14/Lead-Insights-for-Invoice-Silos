@@ -52,6 +52,6 @@ def main():
 
 if __name__ == "__main__":
     if st.session_state["authentication_status"]:
-        main():
+        main()
     else:
         st.warning("Login First!")
