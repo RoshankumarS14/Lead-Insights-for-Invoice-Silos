@@ -4,5 +4,5 @@ plotly
 openpyxl
 plotly-express
 openai
-streamlit-authenticator
+streamlit-authenticator==0.2.3
 pyyaml
